@@ -1,0 +1,19 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-issuer
+spec:
+  acme: # Automated Certificate Management Environment
+    # 어떤 acme 서버를 사용할 지 지정 (아래 예제는 let's encrypt의 CA)
+    server: https://acme-v02.api.letsencrypt.org/directory
+    # 사용자 이메일 주소 기재
+    email: roeniss2@gmail.com
+    # 사용자의 개인키를 저장할 Secret 리소스 이름을 지정
+    privateKeySecretRef:
+      name: issuer-key
+    # 도메인 주소에 대한 소유권 증명을 위한 방법 선택
+    solvers:
+    - http01: # http 요청을 통한 도메인 주소 소유권 증명 방법 사용
+        ingress: # 이 때 사용할 ingress 컨트롤러 지정
+          class: nginx # 자신의 ingress 컨트롤러 타입 기재
+
